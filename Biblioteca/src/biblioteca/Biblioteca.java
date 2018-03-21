@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package biblioteca;
-
+import biblioteca.view.Login;
 /**
  *
  * @author Junior
@@ -15,7 +15,8 @@ public class Biblioteca {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Ejecucion ejec = new Ejecucion();
+        ejec.ejecutarPrograma();
     }
     
 }
