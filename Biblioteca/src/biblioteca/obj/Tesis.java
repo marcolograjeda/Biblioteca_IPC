@@ -12,7 +12,7 @@ package biblioteca.obj;
 public class Tesis extends Documento{
     private String _autor;
     private String _grado;
-    private String _año;
+    private int _año;
 
     public String getAutor() {
         return _autor;
@@ -22,7 +22,7 @@ public class Tesis extends Documento{
         return _grado;
     }
 
-    public String getAño() {
+    public int getAño() {
         return _año;
     }
 
@@ -34,7 +34,7 @@ public class Tesis extends Documento{
         this._grado = _grado;
     }
 
-    public void setAño(String _año) {
+    public void setAño(int _año) {
         this._año = _año;
     }
 
@@ -42,8 +42,8 @@ public class Tesis extends Documento{
         super();
     }
 
-    public Tesis(String _autor, String _grado, String _año, String _id, String _titulo, String _tema) {
-        super(_id, _titulo, _tema);
+    public Tesis(String _id, String _titulo, String _autor, String _grado, String _tema, int _año, boolean _estado) {
+        super(_id, _titulo, _tema, _estado);
         this._autor = _autor;
         this._grado = _grado;
         this._año = _año;

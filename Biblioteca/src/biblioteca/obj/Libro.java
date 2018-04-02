@@ -33,8 +33,8 @@ public class Libro extends Documento{
         super();
     }
 
-    public Libro(String _autor, int _paginas, String _id, String _titulo, String _tema) {
-        super(_id, _titulo, _tema);
+    public Libro(String _id, String _titulo, String _autor, String _tema, int _paginas, boolean _estado) {
+        super(_id, _titulo, _tema, _estado);
         this._autor = _autor;
         this._paginas = _paginas;
     }

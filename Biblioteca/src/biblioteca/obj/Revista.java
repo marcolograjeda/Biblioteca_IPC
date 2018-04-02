@@ -33,8 +33,8 @@ public class Revista extends Documento{
         super();
     }
 
-    public Revista(String _compañia, String _fecha, String _id, String _titulo, String _tema) {
-        super(_id, _titulo, _tema);
+    public Revista(String _id, String _titulo, String _compañia, String _fecha, String _tema, boolean _estado) {
+        super(_id, _titulo, _tema, _estado);
         this._compañia = _compañia;
         this._fecha = _fecha;
     }

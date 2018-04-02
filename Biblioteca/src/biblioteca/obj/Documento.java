@@ -13,6 +13,7 @@ public class Documento {
     private String _id;
     private String _titulo;
     private String _tema;
+    private boolean _estado;
 
     public String getId() {
         return _id;
@@ -24,6 +25,10 @@ public class Documento {
 
     public String getTema() {
         return _tema;
+    }
+
+    public boolean isEstado() {
+        return _estado;
     }
 
     public void setId(String _id) {
@@ -38,12 +43,17 @@ public class Documento {
         this._tema = _tema;
     }
 
+    public void setEstado(boolean _estado) {
+        this._estado = _estado;
+    }
+
     public Documento() {
     }
 
-    public Documento(String _id, String _titulo, String _tema) {
+    public Documento(String _id, String _titulo, String _tema, boolean _estado) {
         this._id = _id;
         this._titulo = _titulo;
         this._tema = _tema;
+        this._estado = _estado;
     }
 }
