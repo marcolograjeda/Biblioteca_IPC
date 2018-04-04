@@ -9,6 +9,8 @@ import biblioteca.Ejecucion;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +23,13 @@ public class Admin {
     static JFrame ventanaAdmin = new JFrame();
     public void crearInicioAdmin(){
         ventanaAdmin.setSize(500,540);
-        ventanaAdmin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventanaAdmin.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                ventanaAdmin.dispose();
+                Login log = new Login();
+                log.crearLogin();
+            }
+        });
         ventanaAdmin.setLayout(null);
         ventanaAdmin.setResizable(false);
         
@@ -61,7 +69,7 @@ public class Admin {
                 Carga carg = new Carga();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaAdmin.setVisible(false);
+                    ventanaAdmin.dispose();
                     carg.crearCarga();
                 }
              }
@@ -72,7 +80,7 @@ public class Admin {
                 Tabla tab = new Tabla();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaAdmin.setVisible(false);
+                    ventanaAdmin.dispose();
                     tab.ventanaTabla(0);
                 }
             }
@@ -83,7 +91,7 @@ public class Admin {
                 Tabla tab = new Tabla();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaAdmin.setVisible(false);
+                    ventanaAdmin.dispose();
                     tab.ventanaTabla(1);
                 }
             }
@@ -94,7 +102,7 @@ public class Admin {
                 Tabla tab = new Tabla();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaAdmin.setVisible(false);
+                    ventanaAdmin.dispose();
                     tab.ventanaTabla(2);
                 }
             }
@@ -105,7 +113,7 @@ public class Admin {
                 Ejecucion ejec = new Ejecucion();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaAdmin.setVisible(false);
+                    ventanaAdmin.dispose();
                     ejec.cerrarSesion();
                 }
             }
@@ -116,7 +124,7 @@ public class Admin {
                 Tabla tab = new Tabla();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaAdmin.setVisible(false);
+                    ventanaAdmin.dispose();
                     tab.ventanaTabla(3);
                 }
              }
@@ -127,6 +135,7 @@ public class Admin {
                 Tabla tab = new Tabla();
                 @Override
                 public void actionPerformed (ActionEvent e){
+                    ventanaAdmin.dispose();
                     tab.ventanaTabla(5);
                 }
              }
@@ -137,6 +146,7 @@ public class Admin {
                 Docs doc = new Docs();
                 @Override
                 public void actionPerformed (ActionEvent e){
+                    ventanaAdmin.dispose();
                     doc.ventanaDocumento();
                 }
              }

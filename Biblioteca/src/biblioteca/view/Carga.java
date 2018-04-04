@@ -30,8 +30,9 @@ public class Carga {
         ventanaCarga.setResizable(false);
         ventanaCarga.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
-                Ejecucion ejec = new Ejecucion();
-                ejec.activarVentana();
+                Admin admin = new Admin();
+                ventanaCarga.dispose();
+                admin.activarVentana();
             }
         });
         
@@ -68,7 +69,7 @@ public class Carga {
                Admin admin = new Admin();
                @Override
                public void actionPerformed (ActionEvent e){
-                   ventanaCarga.setVisible(false);
+                   ventanaCarga.dispose();
                    admin.crearInicioAdmin();
                }
             }
@@ -79,7 +80,7 @@ public class Carga {
                 Ejecucion ejec = new Ejecucion();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaCarga.setVisible(false);
+                    ventanaCarga.dispose();
                     ejec.cerrarSesion();
                 }
             }

@@ -13,6 +13,8 @@ import biblioteca.obj.Usuario;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +31,20 @@ public class Editar {
         ventanaEditar.setSize(500,600);
         ventanaEditar.setLayout(null);
         ventanaEditar.setResizable(false);
+        ventanaEditar.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                if(opcion <3){
+                    Docs doc = new Docs();
+                    doc.ventanaDocumento();
+                    doc.actualizarScroll();
+                    ventanaEditar.dispose();
+                }else{
+                    Tabla tab = new Tabla();
+                    tab.ventanaTabla(opcion);
+                    ventanaEditar.dispose();
+                }
+            }
+        });
         
         JButton _btnEditar = new JButton("Editar");
         JButton _btnCancelar = new JButton("Cancelar");
@@ -93,12 +109,33 @@ public class Editar {
                                 _libro.setTema(_txtTema.getText());
                                 _libro.setPaginas(Integer.parseInt(_txtPaginas.getText()));
                                 ejec.agregarEditar(_libro, 0, posicionP);
-                                Tabla tab = new Tabla();
-                                tab.ventanaTabla(opcion);
-                                ventanaEditar.setVisible(false);
+                                Docs doc = new Docs();
+                                doc.ventanaDocumento();
+                                doc.actualizarScroll();
+                                ventanaEditar.dispose();
                             }
                         }
                     );
+                    _btnCancelar.addActionListener(
+                        new ActionListener(){
+                            Ejecucion ejec = new Ejecucion();
+                            @Override
+                            public void actionPerformed (ActionEvent e){
+                                if(opcion <3){
+                                    Docs doc = new Docs();
+                                    doc.ventanaDocumento();
+                                    doc.actualizarScroll();
+                                    ventanaEditar.dispose();
+                                }else{
+                                    Tabla tab = new Tabla();
+                                    tab.ventanaTabla(opcion);
+                                    ventanaEditar.dispose();
+                                }
+                            }
+                        }
+                    );
+                    
+                    
                 break;
                 case 1:
                     Revista _revista = (Revista)objeto;
@@ -140,9 +177,28 @@ public class Editar {
                                 _revista.setCompañia(_txtCompañia.getText());
                                 _revista.setFecha(_txtFecha.getText());
                                 ejec.agregarEditar(_revista, 1, posicionP);
-                                Tabla tab = new Tabla();
-                                tab.ventanaTabla(opcion);
-                                ventanaEditar.setVisible(false);
+                                Docs doc = new Docs();
+                                doc.ventanaDocumento();
+                                doc.actualizarScroll();
+                                ventanaEditar.dispose();
+                            }
+                        }
+                    );
+                    _btnCancelar.addActionListener(
+                        new ActionListener(){
+                            Ejecucion ejec = new Ejecucion();
+                            @Override
+                            public void actionPerformed (ActionEvent e){
+                                if(opcion <3){
+                                    Docs doc = new Docs();
+                                    doc.ventanaDocumento();
+                                    doc.actualizarScroll();
+                                    ventanaEditar.dispose();
+                                }else{
+                                    Tabla tab = new Tabla();
+                                    tab.ventanaTabla(opcion);
+                                    ventanaEditar.dispose();
+                                }
                             }
                         }
                     );
@@ -193,9 +249,28 @@ public class Editar {
                                 _tesis.setGrado(_txtGrado.getText());
                                 _tesis.setAño(Integer.parseInt(_txtGrado.getText()));
                                 ejec.agregarEditar(_tesis, 2, posicionP);
-                                Tabla tab = new Tabla();
-                                tab.ventanaTabla(opcion);
-                                ventanaEditar.setVisible(false);
+                                Docs doc = new Docs();
+                                doc.ventanaDocumento();
+                                doc.actualizarScroll();
+                                ventanaEditar.dispose();
+                            }
+                        }
+                    );
+                    _btnCancelar.addActionListener(
+                        new ActionListener(){
+                            Ejecucion ejec = new Ejecucion();
+                            @Override
+                            public void actionPerformed (ActionEvent e){
+                                if(opcion <3){
+                                    Docs doc = new Docs();
+                                    doc.ventanaDocumento();
+                                    doc.actualizarScroll();
+                                    ventanaEditar.dispose();
+                                }else{
+                                    Tabla tab = new Tabla();
+                                    tab.ventanaTabla(opcion);
+                                    ventanaEditar.dispose();
+                                }
                             }
                         }
                     );
@@ -241,6 +316,7 @@ public class Editar {
             _txtNombre.setText(_usuarioSinEditar.getNombre());
             _txtApellido.setText(_usuarioSinEditar.getApellido());
             _txtNick.setText(_usuarioSinEditar.getNickName());
+            _txtNick.setEditable(false);
             _txtContraseña.setText(_usuarioSinEditar.getPassword());
             Usuario _usuarioEditado = new Usuario();
             final int posicionP = posicion;
@@ -257,7 +333,7 @@ public class Editar {
                             ejec.agregarEditar(_usuarioEditado, 3, posicionP);
                             Tabla tab = new Tabla();
                             tab.ventanaTabla(opcion);
-                            ventanaEditar.setVisible(false);
+                            ventanaEditar.dispose();
                         }else{
                             int problema = ejec.validarUsuario(_usuarioEditado.getNickName(),2);
                             switch (problema){
@@ -265,7 +341,7 @@ public class Editar {
                                     ejec.agregarEditar(_usuarioEditado, 3, posicionP);
                                     Tabla tab = new Tabla();
                                     tab.ventanaTabla(opcion);
-                                    ventanaEditar.setVisible(false);
+                                    ventanaEditar.dispose();
                                 break;
                                 case 1:
                                     showMessageDialog(null, "Ese nombre de usuario ya existe");
@@ -273,6 +349,24 @@ public class Editar {
                             }
                         }
                         
+                    }
+                }
+            );
+            _btnCancelar.addActionListener(
+                new ActionListener(){
+                    Ejecucion ejec = new Ejecucion();
+                    @Override
+                    public void actionPerformed (ActionEvent e){
+                        if(opcion <3){
+                            Docs doc = new Docs();
+                            doc.ventanaDocumento();
+                            doc.actualizarScroll();
+                            ventanaEditar.dispose();
+                        }else{
+                            Tabla tab = new Tabla();
+                            tab.ventanaTabla(opcion);
+                            ventanaEditar.dispose();
+                        }
                     }
                 }
             );

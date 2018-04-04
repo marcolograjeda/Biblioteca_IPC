@@ -10,6 +10,8 @@ import biblioteca.obj.Usuario;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,8 +39,10 @@ public class Login {
         JLabel _lblContraseña = new JLabel("Contraseña:");
         JButton _btnEntrar = new JButton("Entrar");
         JButton _btnRegistrarse = new JButton("Registrarse");
+        JButton _intentarLuego = new JButton("Intentar luego");
         
         _lblTitulo.setBounds(160, 90, 180, 40);
+        _intentarLuego.setBounds(350, 20, 115, 30);
         _lblTitulo.setFont(new Font("Segoe UI", 0, 25));
         _lblNick.setFont(new Font("Segoe UI", 0, 15));
         _lblContraseña.setFont(new Font("Segoe UI", 0, 15));
@@ -59,7 +63,7 @@ public class Login {
                         ventanaLogin.dispose();
                         Admin admin = new Admin();
                         admin.crearInicioAdmin();
-                    }else{
+                    }else if(_usuarioIniciado.getNickName()!=null){
                         System.out.println("Soy usuario");
                         ventanaLogin.dispose();
                         Docs doc = new Docs();
@@ -76,8 +80,22 @@ public class Login {
                 Registrar reg = new Registrar();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaLogin.setVisible(false);
+                    ventanaLogin.dispose();
                     reg.crearRegistrar();
+                }
+             }
+        );
+        
+        _intentarLuego.addActionListener(
+             new ActionListener(){
+                Registrar reg = new Registrar();
+                @Override
+                public void actionPerformed (ActionEvent e){
+                    ventanaLogin.dispose();
+                    Ejecucion ejec = new Ejecucion();
+                    ejec.intentarLuego();
+                    Docs doc = new Docs();
+                    doc.ventanaDocumento();
                 }
              }
         );
@@ -89,6 +107,7 @@ public class Login {
         ventanaLogin.add(_lblContraseña);
         ventanaLogin.add(_btnEntrar);
         ventanaLogin.add(_btnRegistrarse);
+        ventanaLogin.add(_intentarLuego);
         ventanaLogin.setVisible(true);
     }
 }

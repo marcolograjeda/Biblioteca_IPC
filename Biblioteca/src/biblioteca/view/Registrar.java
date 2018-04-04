@@ -6,9 +6,12 @@
 package biblioteca.view;
 
 import biblioteca.Ejecucion;
+import static biblioteca.view.Admin.ventanaAdmin;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +27,13 @@ public class Registrar {
     public void crearRegistrar(){
         JFrame ventanaRegistrar = new JFrame();
         ventanaRegistrar.setSize(500,540);
-        ventanaRegistrar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventanaRegistrar.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                ventanaRegistrar.dispose();
+                Login log = new Login();
+                log.crearLogin();
+            }
+        });
         ventanaRegistrar.setLayout(null);
         ventanaRegistrar.setResizable(false);
         
@@ -73,6 +82,9 @@ public class Registrar {
                                     ejec.registrarUsuario(_txtNombre.getText(), _txtApellido.getText(), 
                                     _txtNick.getText(), _pswContraseña.getText());
                                     showMessageDialog(null, "El usuario se añadio correctamente");
+                                    ventanaRegistrar.dispose();
+                                    Login log = new Login();
+                                    log.crearLogin();
                                 break;
                                 case 1:
                                     showMessageDialog(null, "Ese nombre de usuario ya existe");
@@ -94,7 +106,7 @@ public class Registrar {
                 @Override
                 public void actionPerformed (ActionEvent e){
                     Login log = new Login();
-                    ventanaRegistrar.setVisible(false);
+                    ventanaRegistrar.dispose();
                     log.crearLogin();
                 }
              }

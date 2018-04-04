@@ -10,6 +10,7 @@ import biblioteca.obj.Revista;
 import biblioteca.obj.Tesis;
 import biblioteca.obj.Usuario;
 import biblioteca.view.Admin;
+import biblioteca.view.Docs;
 import biblioteca.view.Editar;
 import biblioteca.view.Login;
 import biblioteca.view.Tabla;
@@ -40,7 +41,7 @@ public class Ejecucion {
     static String[][] conteoRevistas = new String[0][0];
     static String[][] conteoLibros = new String[0][0];
     static String[][] conteoAutores = new String[0][0];
-    int _numeroProblema;
+    int _numeroProblema = 0;
     static int _numeroUsuario;
     static int _cantidadLibros;
     static int _idLibros;
@@ -56,25 +57,28 @@ public class Ejecucion {
     String[][] problemasUsuario = new String[50][2];
     public void ejecutarPrograma(){
         Usuario admin = new Usuario("", "", "admin", "admin", true);
-        Usuario usuario1 = new Usuario("Prueba", "Prueba", "a", "a", false);
+        /*Usuario usuario1 = new Usuario("Prueba", "Prueba", "a", "a", false);
         Usuario usuario2 = new Usuario("Prueba1", "Prueba1", "b", "b", false);
         Usuario usuario3 = new Usuario("Prueba2", "Prueba2", "c", "c", false);
         Usuario usuario4 = new Usuario("Prueba3", "Prueba3", "d", "d", false);
         Usuario usuario5 = new Usuario("Prueba4", "Prueba4", "e", "e", false);
         Usuario usuario6 = new Usuario("Prueba5", "Prueba5", "f", "f", false);
-        usuarios[0] = admin;
+        
         usuarios[1]=usuario1;
         usuarios[2]=usuario2;
         usuarios[3]=usuario3;
         usuarios[4]=usuario4;
         usuarios[5]=usuario5;
-        usuarios[6]=usuario6;
-        _numeroUsuario =7;
+        usuarios[6]=usuario6;*/
+        usuarios[0] = admin;
+        _numeroUsuario = 1;
         _opcionBusqueda = 0;
-        Login log = new Login();
-        log.crearLogin();
+        //Login log = new Login();
+        //log.crearLogin();
         //Admin admon = new Admin();
         //admon.crearInicioAdmin();
+        Docs doc = new Docs();
+        doc.ventanaDocumento();
     }
     
     public Usuario login(String nick, String contraseña){
@@ -137,66 +141,95 @@ public class Ejecucion {
     }
     
     public int[] separarAgregar(String[] documento){
-        int[] problema = new int[5];
+        int[] problema = new int[9];
+        problemasUsuario = new String[50][2];
         for(int cadena=0;cadena<documento.length;cadena++){
             StringTokenizer token = new StringTokenizer(documento[cadena], "|");
             int contador = token.countTokens();
-            int tipo = Integer.parseInt(token.nextToken());
+            int tipo = 5;
+            String opcion = token.nextToken();
+            if(!opcion.matches("[0-9]*")){
+                System.out.println("Ingrese un numero entero positivo "+ opcion);
+            }else{
+                tipo = Integer.parseInt(opcion);
+            }
             switch(tipo){
                 case 0:
-                    if(_cantidadLibros<50){
-                        _cantidadLibros +=1;
-                        _idLibros +=1;
-                        String titulo =token.nextToken();
-                        String autor = token.nextToken();
-                        Libro _libro = new Libro("LIB-"+_idLibros, titulo, autor,
-                                token.nextToken(), Integer.parseInt(token.nextToken()), false);
-                        libros[_cantidadLibros-1]= _libro;
-                        agregarConteoAutor(autor);
+                    if(contador!=4){
+                        if(_cantidadLibros<50){
+                            _cantidadLibros +=1;
+                            _idLibros +=1;
+                            String titulo =token.nextToken();
+                            String autor = token.nextToken();
+                            Libro _libro = new Libro("LIB-"+_idLibros, titulo, autor,
+                                    token.nextToken(), Integer.parseInt(token.nextToken()), false);
+                            libros[_cantidadLibros-1]= _libro;
+                            agregarConteoAutor(autor);
+                        }else{
+                            problema[0] = 1;
+                        }
                     }else{
-                        problema[0] = 1;
+                        problema[5] = 1; 
                     }
                 break;
                 case 1:
-                    if(_cantidadRevistas<50){
-                        _cantidadRevistas +=1;
-                        _idRevistas +=1;
-                        String titulo =token.nextToken();
-                        String autor = token.nextToken();
-                        Revista _revista = new Revista("REV-"+_idRevistas, 
-                                titulo, autor,token.nextToken(), token.nextToken(), false);
-                        revistas[_cantidadRevistas-1]=_revista;
-                        agregarConteoAutor(autor);
+                    if(contador!=4){
+                        if(_cantidadRevistas<50){
+                            _cantidadRevistas +=1;
+                            _idRevistas +=1;
+                            String titulo =token.nextToken();
+                            String autor = token.nextToken();
+                            Revista _revista = new Revista("REV-"+_idRevistas, 
+                                    titulo, autor,token.nextToken(), token.nextToken(), false);
+                            revistas[_cantidadRevistas-1]=_revista;
+                            agregarConteoAutor(autor);
+                        }else{
+                            problema[1] = 1;
+                        }
                     }else{
-                        problema[1] = 1;
+                        problema[6] = 1;
                     }
                 break;
                 case 2:
-                    if(_cantidadTesis<50){
-                        _cantidadTesis += 1;
-                        _idTesis += 1;
-                        String titulo =token.nextToken();
-                        String autor = token.nextToken();
-                        Tesis _tesis = new Tesis("TES-"+_idTesis, titulo, autor,
-                                token.nextToken(), token.nextToken(), Integer.parseInt(token.nextToken()), false);
-                        tesis[_cantidadTesis-1]=_tesis;
-                        agregarConteoAutor(autor);
+                    if(contador!=5){
+                        if(_cantidadTesis<50){
+                            _cantidadTesis += 1;
+                            _idTesis += 1;
+                            String titulo =token.nextToken();
+                            String autor = token.nextToken();
+                            Tesis _tesis = new Tesis("TES-"+_idTesis, titulo, autor,
+                                    token.nextToken(), token.nextToken(), Integer.parseInt(token.nextToken()), false);
+                            tesis[_cantidadTesis-1]=_tesis;
+                            agregarConteoAutor(autor);
+                        }else{
+                            problema[2] = 1;
+                        }
                     }else{
-                        problema[2] = 1;
+                        problema[7] = 1;
                     }
                 break;
                 case 3:
-                    String nombre = token.nextToken();
-                    String apellido = token.nextToken();
-                    String nick = token.nextToken();
-                    String contraseña = token.nextToken();
-                    problema[3] = validarUsuario(nick, 1);
-                    if (problema[3]==1){
-                        problemasUsuario[_numeroProblema][0] = "Ya existe este nombre de usuario";
-                        problemasUsuario[_numeroProblema][1] = nick;
-                        _numeroProblema ++;
-                    }else if(problema[3]==0){
-                        registrarUsuario(nombre, apellido, nick, contraseña);
+                    if(contador!=4){
+                        String nombre = token.nextToken();
+                        String apellido = token.nextToken();
+                        String nick = token.nextToken();
+                        String contraseña = token.nextToken();
+                        problema[3] = validarUsuario(nick, 1);
+                        
+                        if (problema[3]==1){
+                            problemasUsuario[_numeroProblema][0] = "Ya existe este nombre de usuario";
+                            problemasUsuario[_numeroProblema][1] = nick;
+                            _numeroProblema ++;
+                        }else if(_numeroUsuario==11){
+                            problemasUsuario[_numeroProblema][0] = "La cantidad de usuarios llego a su limite,"
+                                    + " el ultimo usuario es ";
+                            problemasUsuario[_numeroProblema][1] = usuarios[10].getNickName();
+                            _numeroProblema ++;
+                        }else if(problema[3]==0){
+                            registrarUsuario(nombre, apellido, nick, contraseña);
+                        }
+                    }else{
+                        problema[8] = 1;
                     }
                 break;
                 default:
@@ -211,14 +244,30 @@ public class Ejecucion {
         String _losProblemas = "";
         if(problema[0]==1){
             _losProblemas = "La cantidad de libros ha llegado a su limite. El ultimo libro agregado es "+ libros[49].getTitulo() +".\n";
-        }else if(problema[1]==1){
+        }
+        if(problema[1]==1){
             _losProblemas = _losProblemas + "La cantidad de revistas ha llegado a su limite. La ultima revista agregada es "+ revistas[49].getTitulo() +".\n";
-        }else if(problema[2]==1){
+        }
+        if(problema[2]==1){
             _losProblemas = _losProblemas + "La cantidad de tesis ha llegado a su limite. La ultima tesis agregada es "+ tesis[49].getTitulo() +".\n";
-        }else if(problema[3]==2){
+        }
+        if(problema[3]==2){
             _losProblemas = _losProblemas + "La cantidad de usuarios ha llegado a su limite. El utlimo usuario agregado es "+ usuarios[10].getNombre() +".\n";
-        }else if(problema[4]==1){
+        }
+        if(problema[4]==1){
             _losProblemas = _losProblemas + "Hay uno o más elementos que no poseen categoria.\n";
+        }
+        if(problema[5]==1){
+            _losProblemas = _losProblemas + "Faltan uno o más atributos del libro.\n";
+        }
+        if(problema[6]==1){
+            _losProblemas = _losProblemas + "Faltan uno o más atributos de la revista.\n";
+        }
+        if(problema[7]==1){
+            _losProblemas = _losProblemas + "Faltan uno o más atributos de la tesis.\n";
+        }
+        if(problema[8]==1){
+            _losProblemas = _losProblemas + "Faltan uno o más atributos del usuario.\n";
         }
         if(problemasUsuario!=null){
             for(int i=0;i<problemasUsuario.length;i++){
@@ -292,6 +341,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow());
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -314,6 +365,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow());
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -372,7 +425,7 @@ public class Ejecucion {
                             datosRevistas[i][pos] = objeto[0][pos];
                         }
                         if(us==0){
-                            JButton _btnEliminar = (JButton)datosRevistas[revBuscada][7];
+                            JButton _btnEliminar = (JButton)datosRevistas[i][7];
                             _btnEliminar.addActionListener(
                                 new ActionListener(){
                                 @Override
@@ -381,6 +434,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -402,6 +457,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -427,6 +484,7 @@ public class Ejecucion {
                     titulosTesis = columnasNombre;
                     Object[][] datosT = new Object[_cantidadTesis][9];
                     datosTesis = datosT;
+                    cantidadColumnas = 9;
                 }else if(us==1){
                     Object[] columnasNombre = {"ID", "Titulo", "Autor", "Grado", "Tema", "Año", "Estado", "Ver", "Reservar"};
                     titulosTesis = columnasNombre;
@@ -460,7 +518,7 @@ public class Ejecucion {
                             datosTesis[i][pos] = objeto[0][pos];
                         }
                         if(us==0){
-                            JButton _btnEliminar = (JButton)datosTesis[i][7];
+                            JButton _btnEliminar = (JButton)datosTesis[i][8];
                             _btnEliminar.addActionListener(
                                 new ActionListener(){
                                     @Override
@@ -469,6 +527,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -481,7 +541,7 @@ public class Ejecucion {
                             datosTesis[tesBuscada][pos] = objeto[0][pos];
                         }
                         if(us==0){
-                            JButton _btnEliminar = (JButton)datosTesis[tesBuscada][7];
+                            JButton _btnEliminar = (JButton)datosTesis[tesBuscada][8];
                             _btnEliminar.addActionListener(
                                 new ActionListener(){
                                     @Override
@@ -490,6 +550,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -508,62 +570,65 @@ public class Ejecucion {
                 tabla.setPreferredScrollableViewportSize(new Dimension(500, 80));
             break;
             case 3:
-                Object[] tituloUsuarios = {"Nombre", "Apellido", "Usuario", "Contraseña", "Estado", "Editar"};
+                Object[] tituloUsuarios = {"Nombre", "Apellido", "Usuario", "Contraseña", "Editar", "Eliminar"};
                 Object[][] datosUsuarios = new Object[_numeroUsuario][6];
                 for(int i = 0; i<_numeroUsuario;i++){
-                    datosUsuarios[i][0]= usuarios[i].getNombre();
-                    datosUsuarios[i][1]= usuarios[i].getApellido();
-                    datosUsuarios[i][2]= usuarios[i].getNickName();
-                    datosUsuarios[i][3]= usuarios[i].getPassword();
-                    JButton _btnEditar = new JButton("Editar");
-                    JButton _btnEliminar = new JButton("Eliminar");
-                    final String nombreBtn = usuarios[i].getNickName();
-                    _btnEditar.addActionListener(
-                    new ActionListener(){
-                        @Override
-                        public void actionPerformed (ActionEvent e){
-                                System.out.println("Ed " + nombreBtn);
-                                Object obj = new Object();
-                                int posicion = 0;
-                                for(int i = 0;i<_numeroUsuario;i++){
-                                    if(usuarios[i].getNickName().equals(nombreBtn)){
-                                        obj = usuarios[i];
-                                        posicion = i;
+                    if(usuarios[i]!=null){
+                        datosUsuarios[i][0]= usuarios[i].getNombre();
+                        datosUsuarios[i][1]= usuarios[i].getApellido();
+                        datosUsuarios[i][2]= usuarios[i].getNickName();
+                        datosUsuarios[i][3]= usuarios[i].getPassword();
+                        JButton _btnEditar = new JButton("Editar");
+                        JButton _btnEliminar = new JButton("Eliminar");
+                        final String nombreBtn = usuarios[i].getNickName();
+                        _btnEditar.addActionListener(
+                        new ActionListener(){
+                            @Override
+                            public void actionPerformed (ActionEvent e){
+                                    System.out.println("Ed " + nombreBtn);
+                                    Object obj = new Object();
+                                    int posicion = 0;
+                                    for(int i = 0;i<_numeroUsuario;i++){
+                                        if(usuarios[i].getNickName().equals(nombreBtn)){
+                                            obj = usuarios[i];
+                                            posicion = i;
+                                        }
+                                    }
+                                    Tabla tab = new Tabla();
+                                    Editar ed = new Editar();
+                                    ed.crearEditar(obj, 3, posicion);
+                                }
+                            }
+                        );
+                        if(i==0){
+                            _btnEditar.setName(nombreBtn);
+                            _btnEliminar.disable();
+                            _btnEliminar.setName("Deshabilitado");
+                        }else{
+                            _btnEditar.setName(nombreBtn);
+                             _btnEliminar.setName(nombreBtn);
+                        }
+                        _btnEliminar.addActionListener(
+                        new ActionListener(){
+                            @Override
+                            public void actionPerformed (ActionEvent e){
+                                    if(eliminarUsuario(nombreBtn)){
+                                        System.out.println("El " + nombreBtn);
+                                        DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
+                                        dtm.removeRow(tabla.getSelectedRow()); 
                                     }
                                 }
-                                Tabla tab = new Tabla();
-                                Editar ed = new Editar();
-                                ed.crearEditar(obj, 3, posicion);
                             }
-                        }
-                    );
-                    if(i==0){
-                        _btnEditar.setName(nombreBtn);
-                        _btnEliminar.disable();
-                        _btnEliminar.setName("Deshabilitado");
-                    }else{
-                        _btnEditar.setName(nombreBtn);
-                         _btnEliminar.setName(nombreBtn);
+                        );
+                        datosUsuarios[i][4] = _btnEditar;
+                        datosUsuarios[i][5] = _btnEliminar;
+                        tabModel = new DefaultTableModel(datosUsuarios, tituloUsuarios){
+                            public boolean isCellEditable(int rowIndex, int colIndex){
+                                return false;
+                            }
+                        };
                     }
-                    _btnEliminar.addActionListener(
-                    new ActionListener(){
-                        @Override
-                        public void actionPerformed (ActionEvent e){
-                                if(eliminarUsuario(nombreBtn)){
-                                    System.out.println("El " + nombreBtn);
-                                    DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
-                                    dtm.removeRow(tabla.getSelectedRow()); 
-                                }
-                            }
-                        }
-                    );
-                    datosUsuarios[i][4] = _btnEditar;
-                    datosUsuarios[i][5] = _btnEliminar;
-                    tabModel = new DefaultTableModel(datosUsuarios, tituloUsuarios){
-                        public boolean isCellEditable(int rowIndex, int colIndex){
-                            return false;
-                        }
-                    };
+                    
                 tabla.setModel(tabModel);
                 tabla.setPreferredScrollableViewportSize(new Dimension(500, 80));
                 }
@@ -572,7 +637,7 @@ public class Ejecucion {
                 Object[] documentos = new Object[0];
                 Object[][] datosDoc = new Object[0][0];
                 if(us==0){
-                    Object[] documentosVarios = {"ID", "Titulo", "Tema", "Estado", "Editar", "Modificar"};
+                    Object[] documentosVarios = {"ID", "Titulo", "Tema", "Estado", "Editar", "Eliminar"};
                     documentos = documentosVarios;
                     datosDoc = new Object[_cantidadLibros+_cantidadRevistas+_cantidadTesis][6];
                 }else if(us==1){
@@ -637,6 +702,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -651,7 +718,8 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        String ver =verDocumento(nombreBtn, 0);
+                                        showMessageDialog(null, ver);
                                     }
                                 }
                             );
@@ -676,7 +744,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 0));
                                     }
                                 }
                             );
@@ -699,6 +767,20 @@ public class Ejecucion {
                             _btnEditar.setName(revistas[rev].getId());
                             JButton _btnEliminar = new JButton("Eliminar");
                             _btnEliminar.setName(revistas[rev].getId());
+                            _btnEliminar.addActionListener(
+                            new ActionListener(){
+                                @Override
+                                public void actionPerformed (ActionEvent e){
+                                        if(eliminarRevista(nombreBtn)){
+                                            System.out.println("El " + nombreBtn);
+                                            DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
+                                            dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
+                                        }
+                                    }
+                                }
+                            );
                             _btnEditar.addActionListener(
                                 new ActionListener(){
                                 @Override
@@ -727,7 +809,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 1));
                                     }
                                 }
                             );
@@ -752,7 +834,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 1));
                                     }
                                 }
                             );
@@ -775,6 +857,20 @@ public class Ejecucion {
                             _btnEditar.setName(tesis[tes].getId());
                             JButton _btnEliminar = new JButton("Eliminar");
                             _btnEliminar.setName(tesis[tes].getId());
+                            _btnEliminar.addActionListener(
+                            new ActionListener(){
+                                @Override
+                                public void actionPerformed (ActionEvent e){
+                                        if(eliminarTesis(nombreBtn)){
+                                            System.out.println("El " + nombreBtn);
+                                            DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
+                                            dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
+                                        }
+                                    }
+                                }
+                            );
                             _btnEditar.addActionListener(
                                 new ActionListener(){
                                     @Override
@@ -804,7 +900,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 2));
                                     }
                                 }
                             );
@@ -829,7 +925,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 2));
                                     }
                                 }
                             );
@@ -883,6 +979,8 @@ public class Ejecucion {
                                             System.out.println("El " + nombreBtn);
                                             DefaultTableModel dtm = (DefaultTableModel) tabla.getModel();
                                             dtm.removeRow(tabla.getSelectedRow()); 
+                                        }else{
+                                            showMessageDialog(null, "El documento esta en prestamo"); 
                                         }
                                     }
                                 }
@@ -897,7 +995,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 0));
                                     }
                                 }
                             );
@@ -922,7 +1020,7 @@ public class Ejecucion {
                                 @Override
                                 public void actionPerformed (ActionEvent e){
                                         System.out.println("Ver " + nombreBtn);
-
+                                        showMessageDialog(null, verDocumento(nombreBtn, 0));
                                     }
                                 }
                             );
@@ -976,7 +1074,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 1));
                                         }
                                     }
                                 );
@@ -1001,7 +1099,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 1));
                                         }
                                     }
                                 );
@@ -1056,7 +1154,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 2));
                                         }
                                     }
                                 );
@@ -1081,7 +1179,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 2));
                                         }
                                     }
                                 );
@@ -1109,6 +1207,7 @@ public class Ejecucion {
         boolean eliminado = false;
         for(int i = 0; i<_cantidadLibros;i++){
             if(libros[i].getId().equals(_idLibro)&&libros[i].isEstado()==false){
+                String autor = libros[i].getAutor();
                 libros[i] = null;
                 eliminado = true;
                 Libro[] librosNuevos = new Libro[50];
@@ -1122,15 +1221,38 @@ public class Ejecucion {
                 libros = librosNuevos;
                 _cantidadLibros -=1;
                 i = _cantidadLibros;
+                eliminarLibroDelContador(_idLibro);
+                eliminarAutor(autor);
             }
         }
         return eliminado;
+    }
+    
+    public void eliminarLibroDelContador(String _idLibro){
+        for(int i = 0; i<conteoLibros.length;i++){
+            if(conteoLibros[i][0].equals(_idLibro)){
+                conteoLibros[i] = null;
+                String[][] conteoTemporal = new String[conteoLibros.length-1][3];
+                int b=0;
+                for(int a = 0; a<conteoLibros.length;a++){
+                    if(conteoLibros[a]!=null){
+                        conteoTemporal[b][0] = conteoLibros[a][0];
+                        conteoTemporal[b][1] = conteoLibros[a][1];
+                        conteoTemporal[b][2] = conteoLibros[a][2];
+                        b++;
+                    }
+                }
+                conteoLibros = conteoTemporal;
+                i=conteoLibros.length;
+            }
+        }
     }
     
     public boolean eliminarRevista(String _idRevista){
         boolean eliminado = false;
         for(int i = 0; i<_cantidadRevistas;i++){
             if(revistas[i].getId().equals(_idRevista)&&revistas[i].isEstado()==false){
+                String autor = revistas[i].getCompañia();
                 revistas[i] = null;
                 eliminado = true;
                 Revista[] revistasNuevas = new Revista[50];
@@ -1144,15 +1266,60 @@ public class Ejecucion {
                 revistas = revistasNuevas;
                 _cantidadRevistas -=1;
                 i = _cantidadRevistas;
+                eliminarRevistaDelContador(_idRevista);
+                eliminarAutor(autor);
             }
         }
         return eliminado;
+    }
+    
+    public void eliminarRevistaDelContador(String _idRevista){
+        for(int i = 0; i<conteoRevistas.length;i++){
+            if(conteoRevistas[i][0].equals(_idRevista)){
+                conteoRevistas[i] = null;
+                String[][] conteoTemporal = new String[conteoRevistas.length-1][5];
+                int b=0;
+                for(int a = 0; a<conteoRevistas.length;a++){
+                    if(conteoRevistas[a]!=null){
+                        conteoTemporal[b][0] = conteoRevistas[a][0];
+                        conteoTemporal[b][1] = conteoRevistas[a][1];
+                        b++;
+                    }
+                }
+                conteoRevistas = conteoTemporal;
+                i=conteoRevistas.length;
+            }
+        }
+    }
+    
+    public void eliminarAutor(String nombreAutor){
+        for(int i = 0; i<conteoAutores.length;i++){
+            if(conteoAutores[i][0].equals(nombreAutor)){
+                if(Integer.parseInt(conteoAutores[i][1])>1){
+                    conteoAutores[i][1] = Integer.toString(Integer.parseInt(conteoAutores[i][1])-1);
+                }else{
+                    conteoAutores[i] = null;
+                    String[][] conteoTemporal = new String[conteoAutores.length-1][5];
+                    int b=0;
+                    for(int a = 0; a<conteoAutores.length;a++){
+                        if(conteoAutores[a]!=null){
+                            conteoTemporal[b][0] = conteoAutores[a][0];
+                            conteoTemporal[b][1] = conteoAutores[a][1];
+                            b++;
+                        }
+                    }
+                    conteoAutores = conteoTemporal;
+                }
+                i=conteoAutores.length;
+            }
+        }
     }
     
     public boolean eliminarTesis(String _idRevista){
         boolean eliminado = false;
         for(int i = 0; i<_cantidadTesis;i++){
             if(tesis[i].getId().equals(_idRevista)&&tesis[i].isEstado()==false){
+                String autor = tesis[i].getAutor();
                 tesis[i] = null;
                 eliminado = true;
                 Tesis[] tesisNuevas = new Tesis[50];
@@ -1166,6 +1333,7 @@ public class Ejecucion {
                 tesis = tesisNuevas;
                 _cantidadTesis -=1;
                 i = _cantidadTesis;
+                eliminarAutor(autor);
             }
         }
         return eliminado;
@@ -1236,21 +1404,6 @@ public class Ejecucion {
                 conteoTotal = conteoTemporal;
                 i=conteoTotal.length;
             }
-            /*if(revistas[i].getId().equals(_idRevista)&&revistas[i].isEstado()==false){
-                revistas[i] = null;
-                eliminado = true;
-                Revista[] revistasNuevas = new Revista[50];
-                int b = 0;
-                for(int a = 0; a<_cantidadRevistas;a++){
-                    if(revistas[a]!=null){
-                        revistasNuevas[b] = revistas[a];
-                        b++;
-                    }
-                }
-                revistas = revistasNuevas;
-                _cantidadRevistas -=1;
-                i = _cantidadRevistas;
-            }*/
         }
     }
     
@@ -1334,7 +1487,7 @@ public class Ejecucion {
                 @Override
                 public void actionPerformed (ActionEvent e){
                         System.out.println("Ver " + nombreBtn);
-
+                        showMessageDialog(null, verDocumento(nombreBtn, 0));
                     }
                 }
             );
@@ -1360,7 +1513,7 @@ public class Ejecucion {
                 @Override
                 public void actionPerformed (ActionEvent e){
                         System.out.println("Ver " + nombreBtn);
-                        
+                        showMessageDialog(null, verDocumento(nombreBtn, 0));
                     }
                 }
             );
@@ -1420,7 +1573,7 @@ public class Ejecucion {
                 @Override
                 public void actionPerformed (ActionEvent e){
                         System.out.println("Ver " + nombreBtn);
-
+                        showMessageDialog(null, verDocumento(nombreBtn, 1));
                     }
                 }
             );
@@ -1445,7 +1598,7 @@ public class Ejecucion {
                 @Override
                 public void actionPerformed (ActionEvent e){
                         System.out.println("Ver " + nombreBtn);
-
+                        showMessageDialog(null, verDocumento(nombreBtn, 1));
                     }
                 }
             );
@@ -1507,7 +1660,7 @@ public class Ejecucion {
                 @Override
                 public void actionPerformed (ActionEvent e){
                         System.out.println("Ver " + nombreBtn);
-
+                        showMessageDialog(null, verDocumento(nombreBtn, 2));
                     }
                 }
             );
@@ -1537,7 +1690,7 @@ public class Ejecucion {
                 @Override
                 public void actionPerformed (ActionEvent e){
                         System.out.println("Ver " + nombreBtn);
-
+                        showMessageDialog(null, verDocumento(nombreBtn, 2));
                     }
                 }
             );
@@ -1898,7 +2051,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 0));
                                         }
                                     }
                                 );
@@ -1941,7 +2094,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 1));
                                         }
                                     }
                                 );
@@ -1984,7 +2137,7 @@ public class Ejecucion {
                                     @Override
                                     public void actionPerformed (ActionEvent e){
                                             System.out.println("Ver " + nombreBtn);
-
+                                            showMessageDialog(null, verDocumento(nombreBtn, 2));
                                         }
                                     }
                                 );
@@ -2040,38 +2193,40 @@ public class Ejecucion {
         DefaultTableModel tabModel;
         switch(opcion){
             case 0:
-                int numeroMayor = Integer.parseInt(conteoLibros[0][2]);
-                idLibro = conteoLibros[0][0];
-                for(int a = 0; a<conteoLibros.length;a++){
-                    if(numeroMayor<Integer.parseInt(conteoLibros[a][2])){
-                        numeroMayor = Integer.parseInt(conteoLibros[a][2]);
-                        idLibro = conteoLibros[a][0];
-                        posicion = a;
-                        System.out.println("Numero mayor es: " +numeroMayor);
-                    }
-                }
                 Object[] documentos = {"ID", "Titulo", "Autor", "Tema", "# de Paginas", "Estado", "Consultas"};
                 Object[][] datosDoc = new Object[1][7];
-                for(int a = 0;a<_cantidadLibros;a++){
-                    if(libros[a].getId().equals(idLibro)){
-                        datosDoc[0][0] =libros[a].getId();
-                        datosDoc[0][1] =libros[a].getTitulo();
-                        datosDoc[0][2] =libros[a].getAutor();
-                        datosDoc[0][3] =libros[a].getTema();
-                        datosDoc[0][4] =libros[a].getPaginas();
-                        if(libros[a].isEstado()){
-                            datosDoc[0][5] = "Prestado";
-                        }else{
-                            datosDoc[0][5] = "Disponible";
+                if(conteoLibros.length>0){
+                    int numeroMayor = Integer.parseInt(conteoLibros[0][2]);
+                    idLibro = conteoLibros[0][0];
+                    for(int a = 0; a<conteoLibros.length;a++){
+                        if(numeroMayor<Integer.parseInt(conteoLibros[a][2])){
+                            numeroMayor = Integer.parseInt(conteoLibros[a][2]);
+                            idLibro = conteoLibros[a][0];
+                            posicion = a;
+                            System.out.println("Numero mayor es: " +numeroMayor);
                         }
-                        datosDoc[0][6] =conteoLibros[posicion][2];
+                    }
+                    for(int a = 0;a<_cantidadLibros;a++){
+                        if(libros[a].getId().equals(idLibro)){
+                            datosDoc[0][0] =libros[a].getId();
+                            datosDoc[0][1] =libros[a].getTitulo();
+                            datosDoc[0][2] =libros[a].getAutor();
+                            datosDoc[0][3] =libros[a].getTema();
+                            datosDoc[0][4] =libros[a].getPaginas();
+                            if(libros[a].isEstado()){
+                                datosDoc[0][5] = "Prestado";
+                            }else{
+                                datosDoc[0][5] = "Disponible";
+                            }
+                            datosDoc[0][6] =conteoLibros[posicion][2];
+                        }
                     }
                 }
                 tabModel = new DefaultTableModel(datosDoc, documentos){
-                    public boolean isCellEditable(int rowIndex, int colIndex){
-                        return false;
-                    }
-                };
+                        public boolean isCellEditable(int rowIndex, int colIndex){
+                            return false;
+                        }
+                    };
                 tabla.setModel(tabModel);
                 tabla.setPreferredScrollableViewportSize(new Dimension(500, 80));
             break;
@@ -2264,5 +2419,59 @@ public class Ejecucion {
             break;
         }
         return tabla;
+    }
+    
+    public String verDocumento(String _idDoc, int opcion){
+        String ver = "";
+        switch(opcion){
+            case 0:
+                for(int a=0;a<_cantidadLibros;a++){
+                    if(libros[a].getId().equals(_idDoc)){
+                        String estado ="";
+                        if(libros[a].isEstado()){
+                            estado = "Prestado";
+                        }else{
+                            estado = "Disponible";
+                        }
+                        ver= "ID: "+libros[a].getId()+"\nTitulo: "+libros[a].getTitulo()+"\nAutor: "+libros[a].getAutor()
+                                +"\nTema: "+libros[a].getTema()+"\n# de Paginas: "+libros[a].getPaginas()+"\nEstado: "+estado;
+                    }
+                }
+            break;
+            case 1:
+                for(int a=0;a<_cantidadRevistas;a++){
+                    if(revistas[a].getId().equals(_idDoc)){
+                        String estado ="";
+                        if(revistas[a].isEstado()){
+                            estado = "Prestado";
+                        }else{
+                            estado = "Disponible";
+                        }
+                        ver = "ID: "+revistas[a].getId()+"\nTitulo: "+revistas[a].getTitulo()+"\nCompañia: "+revistas[a].getCompañia() 
+                                +"\nFecha : "+revistas[a].getFecha()+"\nTema: "+revistas[a].getTema()+"\nEstado: "+estado;
+                    }
+                }
+            break;
+            case 2:
+                for(int a=0;a<_cantidadTesis;a++){
+                    if(tesis[a].getId().equals(_idDoc)){
+                        String estado ="";
+                        if(tesis[a].isEstado()){
+                            estado = "Prestado";
+                        }else{
+                            estado = "Disponible";
+                        }
+                        ver = "ID: "+tesis[a].getId()+"\nTitulo: "+tesis[a].getTitulo()+"\nCompañia: "+tesis[a].getAutor() 
+                                +"\nFecha : "+tesis[a].getGrado()+"\nTema: "+tesis[a].getTema()+"\nAño: "+tesis[a].getAño()+
+                                "\nEstado: "+estado;
+                    }
+                }
+            break;
+        }
+        return ver;
+    }
+    
+    public void intentarLuego(){
+        usuarioLogin = null;
     }
 }

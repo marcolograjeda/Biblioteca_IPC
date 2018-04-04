@@ -43,12 +43,11 @@ public class Docs {
         Ejecucion ejec = new Ejecucion();
         ventanaDocumento.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
-              //ventanaDocumento.setVisible(false);
                 if(ejec.obtenerUsuario()==null||!ejec.obtenerUsuario().isRol()){
                     Login log = new Login();
                     log.crearLogin();
                 }else{
-                  ventanaDocumento.dispose();
+                    ventanaDocumento.dispose();
                     ejec.activarVentana();
                 }
             }
@@ -82,7 +81,7 @@ public class Docs {
                     Login log = new Login();
                     @Override
                     public void actionPerformed (ActionEvent e){
-                        ventanaDocumento.setVisible(false);
+                        ventanaDocumento.dispose();
                         log.crearLogin();
                     }
                 }
@@ -95,21 +94,27 @@ public class Docs {
                     Ejecucion ejec = new Ejecucion();
                     @Override
                     public void actionPerformed (ActionEvent e){
-                        ventanaDocumento.setVisible(false);
+                        ventanaDocumento.dispose();
                         ejec.cerrarSesion();
                     }
                 }
             );
             ventanaDocumento.add(_btnSalir);
         }
+        
         _btnBuscar.addActionListener(
                 new ActionListener(){
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    Ejecucion ejec = new Ejecucion();
-                    ventanaDocumento.remove(scroll);
-                    scroll = cargarTablaBusqueda(lista.getSelectedItem().toString(), _txtBuscar.getText());
-                    ventanaDocumento.add(scroll, BorderLayout.CENTER);
+                    if(!_txtBuscar.getText().equals("")){
+                        Ejecucion ejec = new Ejecucion();
+                        ventanaDocumento.remove(scroll);
+                        scroll = cargarTablaBusqueda(lista.getSelectedItem().toString(), _txtBuscar.getText());
+                        ventanaDocumento.add(scroll, BorderLayout.CENTER);
+                    }else{
+                        showMessageDialog(null, "Ingrese un campo de busqueda.");
+                    }
+                    
                 }
              }
         );
@@ -136,6 +141,7 @@ public class Docs {
     }
      
     public JScrollPane cargarTabla(String seleccion){
+        ventanaDocumento.remove(scroll);
         int opcion = 4;
         opcion = opcion(seleccion);
         Ejecucion ejec = new Ejecucion();
@@ -156,6 +162,8 @@ public class Docs {
                             ((JButton)value).doClick();
                             if(tabla.getColumnName(columna).equals("Reservar")){
                                 actualizarScroll();
+                            }else if(tabla.getColumnName(columna).equals("Editar")){
+                                ventanaDocumento.dispose();
                             }
                         }
                     }
@@ -187,6 +195,8 @@ public class Docs {
                                 ((JButton)value).doClick();
                                 if(tabla.getColumnName(columna).equals("Reservar")){
                                     actualizarScroll();
+                                }else if(tabla.getColumnName(columna).equals("Editar")){
+                                    ventanaDocumento.dispose();
                                 }
                             }
                         }
@@ -216,6 +226,7 @@ public class Docs {
     }
     
     public void actualizarScroll(){
+        ventanaDocumento.remove(scroll);
         Ejecucion ejec = new Ejecucion();
         JTable tabla = ejec.actualizarTabla();
         tabla.setDefaultRenderer(Object.class, new Render());
@@ -232,6 +243,8 @@ public class Docs {
                             ((JButton)value).doClick();
                             if(tabla.getColumnName(columna).equals("Reservar")){
                                 actualizarScroll();
+                            }else if(tabla.getColumnName(columna).equals("Editar")){
+                                ventanaDocumento.dispose();
                             }
                         }
                     }

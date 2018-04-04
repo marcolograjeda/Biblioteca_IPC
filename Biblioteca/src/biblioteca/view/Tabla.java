@@ -33,10 +33,11 @@ public class Tabla {
         ventanaTabla.setLayout(null);
         ventanaTabla.setResizable(false);
         ventanaTabla.remove(scrollPane);
+        scrollPane = new JScrollPane();
         Ejecucion ejec = new Ejecucion();
         ventanaTabla.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
-              ventanaTabla.setVisible(false);
+              ventanaTabla.dispose();
               ejec.activarVentana();
             }
         });
@@ -55,7 +56,10 @@ public class Tabla {
                         if(value instanceof JButton){
                             JButton btn2 = (JButton)value;
                             if(!btn2.getName().equals("Deshabilitado")){
-                                 ((JButton)value).doClick();
+                                ((JButton)value).doClick();
+                                if(tabla.getColumnName(columna).equals("Editar")){
+                                    ventanaTabla.dispose();
+                                }
                             }
                         }
                     }
@@ -90,7 +94,7 @@ public class Tabla {
                 Ejecucion ejec = new Ejecucion();
                 @Override
                 public void actionPerformed (ActionEvent e){
-                    ventanaTabla.setVisible(false);
+                    ventanaTabla.dispose();
                     ejec.cerrarSesion();
                 }
             }
