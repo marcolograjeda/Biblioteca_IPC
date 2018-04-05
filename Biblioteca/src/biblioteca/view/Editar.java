@@ -79,6 +79,7 @@ public class Editar {
             _lblTema.setBounds(162, 205, 90, 20);
             _txtTema.setBounds(162, 230, 175, 30);
             final int posicionP = posicion;
+            
             switch(opcion){
                 case 0:
                     Libro _libro = (Libro)objeto;
@@ -89,17 +90,26 @@ public class Editar {
                     _txtEstado.setText(estado);
                     JLabel _lblPaginas = new JLabel("Paginas:");
                     _lblPaginas.setFont(new Font("Segoe UI", 0, 15));
+                    JLabel _lblAutorL = new JLabel("Autor:");
+                    _lblAutorL.setFont(new Font("Segoe UI", 0, 15));
+                    JTextField _txtAutorL = new JTextField(_libro.getAutor());
                     JTextField _txtPaginas = new JTextField();
                     _txtPaginas.setText(Integer.toString((_libro.getPaginas())));
+                    final String nombreAutor = _libro.getAutor();
                     
-                    _lblPaginas.setBounds(162, 265, 90, 20);
-                    _txtPaginas.setBounds(162, 290, 175, 30);
-                    _lblEstado.setBounds(162, 325, 90, 20);
-                    _txtEstado.setBounds(162, 350, 175, 30);
-                    _btnEditar.setBounds(140, 400, 105, 30);
-                    _btnCancelar.setBounds(260, 400, 105, 30);
+                    _lblAutorL.setBounds(162, 265, 90, 20);
+                    _txtAutorL.setBounds(162, 290, 175, 30);
+                    _lblPaginas.setBounds(162, 325, 90, 20);
+                    _txtPaginas.setBounds(162, 350, 175, 30);
+                    _lblEstado.setBounds(162, 385, 90, 20);
+                    _txtEstado.setBounds(162, 415, 175, 30);
+                    _btnEditar.setBounds(140, 460, 105, 30);
+                    _btnCancelar.setBounds(260, 460, 105, 30);
+                    
                     ventanaEditar.add(_lblPaginas);
                     ventanaEditar.add(_txtPaginas);
+                    ventanaEditar.add(_lblAutorL);
+                    ventanaEditar.add(_txtAutorL);
                     _btnEditar.addActionListener(
                         new ActionListener(){
                             Ejecucion ejec = new Ejecucion();
@@ -108,6 +118,9 @@ public class Editar {
                                 _libro.setTitulo(_txtTitulo.getText());
                                 _libro.setTema(_txtTema.getText());
                                 _libro.setPaginas(Integer.parseInt(_txtPaginas.getText()));
+                                _libro.setAutor(_txtAutorL.getText());
+                                ejec.eliminarAutor(nombreAutor);
+                                ejec.agregarConteoAutor(_txtAutorL.getText());
                                 ejec.agregarEditar(_libro, 0, posicionP);
                                 Docs doc = new Docs();
                                 doc.ventanaDocumento();
@@ -153,7 +166,7 @@ public class Editar {
                     _txtCompañia.setText(_revista.getCompañia());
                     JTextField _txtFecha = new JTextField();
                     _txtFecha.setText(_revista.getFecha());
-                    
+                    final String nombreAutorR = _revista.getCompañia();
                     _lblCompañia.setBounds(162, 265, 90, 20);
                     _txtCompañia.setBounds(162, 290, 175, 30);
                     _lblFecha.setBounds(162, 325, 90, 20);
@@ -176,6 +189,8 @@ public class Editar {
                                 _revista.setTema(_txtTema.getText());
                                 _revista.setCompañia(_txtCompañia.getText());
                                 _revista.setFecha(_txtFecha.getText());
+                                ejec.eliminarAutor(nombreAutorR);
+                                ejec.agregarConteoAutor(_txtCompañia.getText());
                                 ejec.agregarEditar(_revista, 1, posicionP);
                                 Docs doc = new Docs();
                                 doc.ventanaDocumento();
@@ -210,7 +225,7 @@ public class Editar {
                     _txtTema.setText(_tesis.getTema());
                     String estadoT = estado(_tesis.isEstado());
                     _txtEstado.setText(estadoT);
-                    
+                    final String nombreAutorT = _tesis.getAutor();
                     JLabel _lblAutor = new JLabel("Autor:");
                     _lblAutor.setFont(new Font("Segoe UI", 0, 15));
                     JLabel _lblGrado = new JLabel("Grado:");
@@ -248,7 +263,10 @@ public class Editar {
                                 _tesis.setAutor(_txtAutor.getText());
                                 _tesis.setGrado(_txtGrado.getText());
                                 _tesis.setAño(Integer.parseInt(_txtGrado.getText()));
+                                ejec.eliminarAutor(nombreAutorT);
+                                ejec.agregarConteoAutor(_txtAutor.getText());
                                 ejec.agregarEditar(_tesis, 2, posicionP);
+                                
                                 Docs doc = new Docs();
                                 doc.ventanaDocumento();
                                 doc.actualizarScroll();
