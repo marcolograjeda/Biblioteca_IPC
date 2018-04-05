@@ -262,7 +262,7 @@ public class Editar {
                                 _tesis.setTema(_txtTema.getText());
                                 _tesis.setAutor(_txtAutor.getText());
                                 _tesis.setGrado(_txtGrado.getText());
-                                _tesis.setAño(Integer.parseInt(_txtGrado.getText()));
+                                _tesis.setAño(Integer.parseInt(_txtAño.getText()));
                                 ejec.eliminarAutor(nombreAutorT);
                                 ejec.agregarConteoAutor(_txtAutor.getText());
                                 ejec.agregarEditar(_tesis, 2, posicionP);
