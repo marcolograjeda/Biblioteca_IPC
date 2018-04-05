@@ -141,7 +141,7 @@ public class Ejecucion {
     }
     
     public int[] separarAgregar(String[] documento){
-        int[] problema = new int[9];
+        int[] problema = new int[10];
         problemasUsuario = new String[50][2];
         for(int cadena=0;cadena<documento.length;cadena++){
             StringTokenizer token = new StringTokenizer(documento[cadena], "|");
@@ -150,6 +150,7 @@ public class Ejecucion {
             String opcion = token.nextToken();
             if(!opcion.matches("[0-9]*")){
                 System.out.println("Ingrese un numero entero positivo "+ opcion);
+                problema[9]=1;
             }else{
                 tipo = Integer.parseInt(opcion);
             }
@@ -167,9 +168,11 @@ public class Ejecucion {
                             agregarConteoAutor(autor);
                         }else{
                             problema[0] = 1;
+                            _numeroProblema ++;
                         }
                     }else{
                         problema[5] = 1; 
+                        _numeroProblema ++;
                     }
                 break;
                 case 1:
@@ -185,9 +188,11 @@ public class Ejecucion {
                             agregarConteoAutor(autor);
                         }else{
                             problema[1] = 1;
+                            _numeroProblema ++;
                         }
                     }else{
                         problema[6] = 1;
+                        _numeroProblema ++;
                     }
                 break;
                 case 2:
@@ -203,9 +208,11 @@ public class Ejecucion {
                             agregarConteoAutor(autor);
                         }else{
                             problema[2] = 1;
+                            _numeroProblema ++;
                         }
                     }else{
                         problema[7] = 1;
+                        _numeroProblema ++;
                     }
                 break;
                 case 3:
@@ -230,6 +237,7 @@ public class Ejecucion {
                         }
                     }else{
                         problema[8] = 1;
+                        _numeroProblema ++;
                     }
                 break;
                 default:
@@ -269,13 +277,19 @@ public class Ejecucion {
         if(problema[8]==1){
             _losProblemas = _losProblemas + "Faltan uno o más atributos del usuario.\n";
         }
+        if(problema[9]==1){
+            _losProblemas = _losProblemas + "Ingresa un número entero positivo.\n";
+        }
         if(problemasUsuario!=null){
             for(int i=0;i<problemasUsuario.length;i++){
                 if(problemasUsuario[i][0]!=null){
                     _losProblemas = _losProblemas + problemasUsuario[i][0] + " "+ problemasUsuario[i][1] +".\n";
                 }
             }
-        }        
+        }
+        if(_numeroProblema==0){
+            _losProblemas = "Se realizó la carga sin ningun problema";
+        }
         showMessageDialog(null, _losProblemas);
         problemasUsuario= null;
         _numeroProblema = 0;
@@ -283,6 +297,7 @@ public class Ejecucion {
     
     public JTable mostrarTabla(int opcion, boolean _busqueda, String titulo){
         opcionBuscada = opcion;
+        txtBuscar = titulo;
         int us = tipoUsuarioLogeado(usuarioLogin);
         JTable tabla = new JTable();
         DefaultTableModel tabModel= new DefaultTableModel(){
@@ -291,6 +306,11 @@ public class Ejecucion {
             }
         };
         int cantidadColumnas = 8;
+        if(!_busqueda){
+            txtBuscar ="";
+        }else if(txtBuscar.equals("")){
+            _busqueda = false;
+        }
         switch(opcion){
             case 0:
                 Object[] columnas = new Object[0];
@@ -331,6 +351,7 @@ public class Ejecucion {
                         for(int pos = 0; pos<cantidadColumnas;pos++){
                             datos[i][pos] = objeto[0][pos];
                         }
+                        
                         if(us==0){
                             JButton _btnEliminar = (JButton)datos[i][7];
                             _btnEliminar.addActionListener(

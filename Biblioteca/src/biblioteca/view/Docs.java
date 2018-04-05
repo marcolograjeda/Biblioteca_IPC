@@ -123,6 +123,7 @@ public class Docs {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!lista.getSelectedItem().equals("Mis Prestamos")){
+                    _txtBuscar.setText("");
                     System.out.println(lista.getSelectedItem());
                     ventanaDocumento.remove(scroll);
                     scroll = cargarTabla(lista.getSelectedItem().toString());
